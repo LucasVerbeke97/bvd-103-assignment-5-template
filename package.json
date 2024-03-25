@@ -7,7 +7,9 @@
     "start-server": "tsx ./index.ts",
     "lint": "eslint ./**/*.ts",
     "fix-lint": "eslint --fix ./**/*.ts",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +33,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
   }
 }
