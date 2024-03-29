@@ -2,7 +2,7 @@ import Koa from 'koa'
 import cors from '@koa/cors'
 import zodRouter from 'koa-zod-router'
 import qs from 'koa-qs'
-import { setupBookRoutes } from './books'
+import { setupBookRoutes } from './src/books'
 
 const app = new Koa()
 

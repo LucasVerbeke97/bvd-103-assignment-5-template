@@ -1,6 +1,6 @@
 import { type Collection, type Db, MongoClient } from 'mongodb'
 // We are importing the book type here, so we can keep our types consistent with the front end
-import { type Book } from './adapter/assignment-3'
+import { type Book } from '../adapter/assignment-3'
 
 // This is the connection string for the mongo database in our docker compose file
 // We're using process.env to detect if a different mongo uri is set, primarily for testing purpuses
@@ -19,11 +19,20 @@ export interface DatabaseAccessor {
 }
 
 export function getDatabase (): DatabaseAccessor {
-  const database = client.db(import.meta.vitest !== undefined ? (Math.random() * 100000).toString() : 'mcmasterful-books')
+  const database = client.db(import.meta.vitest !== undefined ? Math.floor(Math.random() * 100000).toPrecision() : 'mcmasterful-books')
   const books = database.collection<Book>('books')
 
   return {
     database,
     books
   }
+}
+
+if (import.meta.vitest !== undefined) {
+  const { test, expect } = import.meta.vitest
+
+  test('Can Setup Test DB', () => {
+    const { database } = getDatabase()
+    expect(database.databaseName).not.toBe('mcmasterful-books')
+  })
 }
