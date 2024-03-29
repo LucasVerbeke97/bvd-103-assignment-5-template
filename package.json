@@ -33,6 +33,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
+    "mongodb-memory-server": "^9.1.8",
     "typescript": "^5.4.3",
     "vitest": "^1.4.0"
   }
