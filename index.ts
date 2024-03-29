@@ -2,9 +2,7 @@ import Koa from 'koa'
 import cors from '@koa/cors'
 import zodRouter from 'koa-zod-router'
 import qs from 'koa-qs'
-import booksList from './books/list'
-import createOrUpdateBook from './books/create_or_update'
-import deleteBook from './books/delete'
+import { setupBookRoutes } from './books'
 
 const app = new Koa()
 
@@ -16,14 +14,7 @@ app.use(cors())
 
 const router = zodRouter()
 
-// Setup Book List Route
-booksList(router)
-
-// Setup Book Create Route
-createOrUpdateBook(router)
-
-// Setup Book Delete Route
-deleteBook(router)
+setupBookRoutes(router)
 
 app.use(router.routes())
 

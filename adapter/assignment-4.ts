@@ -21,24 +21,7 @@ export interface Filter {
 // If multiple filters are provided, any book that matches at least one of them should be returned
 // Within a single filter, a book would need to match all the given conditions
 async function listBooks (filters?: Filter[]): Promise<Book[]> {
-  return [
-    {
-      id: 'book-1',
-      name: 'Test Book',
-      author: 'Author',
-      description: '',
-      price: 5,
-      image: ''
-    },
-    {
-      id: 'book-2',
-      name: 'A Journal',
-      author: 'Writer',
-      description: '',
-      price: 5,
-      image: ''
-    }
-  ]
+  return await previous_assignment.listBooks(filters)
 }
 
 async function createOrUpdateBook (book: Book): Promise<BookID> {
@@ -50,13 +33,11 @@ async function removeBook (book: BookID): Promise<void> {
 }
 
 async function lookupBookById (book: BookID): Promise<Book> {
-  return {
-    id: 'book-2',
-    name: 'A Journal',
-    author: 'Writer',
-    description: '',
-    price: 5,
-    image: ''
+  const result = await fetch(`http://localhost:3000/books/${book}`)
+  if (result.ok) {
+    return await result.json() as Book
+  } else {
+    throw new Error('Couldnt Find Book')
   }
 }
 
