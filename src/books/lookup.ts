@@ -55,7 +55,7 @@ if (import.meta.vitest !== undefined) {
     const id: BookID = generateId()
     const testBook: Book = {
       id,
-      name: 'Test Book',
+      name: 'My Book!',
       author: 'test author',
       description: '',
       price: 0,

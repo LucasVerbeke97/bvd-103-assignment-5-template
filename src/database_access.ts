@@ -4,7 +4,7 @@ import { type Book } from '../adapter/assignment-3'
 
 // This is the connection string for the mongo database in our docker compose file
 // We're using process.env to detect if a different mongo uri is set, primarily for testing purpuses
-const uri = typeof process.env.__MONGO_URI === 'string' ? process.env.__MONGO_URI : 'mongodb://mongo'
+const uri = (global as any).MONGO_URI as string ?? 'mongodb://mongo'
 
 // We're setting up a client, opening the database for our project, and then opening
 // a typed collection for our books.
@@ -19,7 +19,7 @@ export interface DatabaseAccessor {
 }
 
 export function getDatabase (): DatabaseAccessor {
-  const database = client.db(import.meta.vitest !== undefined ? Math.floor(Math.random() * 100000).toPrecision() : 'mcmasterful-books')
+  const database = client.db((global as any).MONGO_URI !== undefined ? Math.floor(Math.random() * 100000).toPrecision() : 'mcmasterful-books')
   const books = database.collection<Book>('books')
 
   return {
@@ -33,6 +33,6 @@ if (import.meta.vitest !== undefined) {
 
   test('Can Setup Test DB', () => {
     const { database } = getDatabase()
-    expect(database.databaseName).not.toBe('mcmasterful-books')
+    expect(database.databaseName, `URI: ${uri}, DB: ${database.databaseName}`).not.toEqual('mcmasterful-books')
   })
 }
