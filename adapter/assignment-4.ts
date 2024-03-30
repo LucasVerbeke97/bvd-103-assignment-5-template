@@ -45,7 +45,10 @@ export type ShelfId = string
 export type OrderId = string
 
 async function placeBooksOnShelf (bookId: BookID, numberOfBooks: number, shelf: ShelfId): Promise<void> {
-  throw new Error('not implemented')
+  const result = await fetch(`http://localhost:3000/warehouse/${bookId}/${shelf}/${numberOfBooks}`, { method: 'put' })
+  if (!result.ok) {
+    throw new Error('Couldnt Place on Shelf')
+  }
 }
 
 async function bookAvailability (bookId: BookID): Promise<number> {
@@ -66,7 +69,6 @@ async function fulfilOrder (order: OrderId, booksFulfilled: Array<{ book: BookID
 
 async function listOrders (): Promise<Array<{ orderId: OrderId, books: BookID[] }>> {
   return [
-    { orderId: 'order-123', books: ['book-2', 'book-2'] }
   ]
 }
 

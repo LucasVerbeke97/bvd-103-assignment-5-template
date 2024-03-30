@@ -6,7 +6,11 @@ import { ObjectId } from 'mongodb'
 import { generateId, seedDatabase } from '../../database_test_utilities'
 
 async function getBook (id: BookID, { books }: DatabaseAccessor): Promise<Book | false> {
-  const result = await books.findOne({ _id: ObjectId.createFromHexString(id) })
+  if (id.length !== 24) {
+    console.error('Failed with id: ', id)
+    return false
+  }
+  const result = await books.findOne({ _id: ObjectId.createFromHexString(id.trim()) })
   if (result === null) {
     return false
   }

@@ -3,6 +3,7 @@ import cors from '@koa/cors'
 import zodRouter from 'koa-zod-router'
 import qs from 'koa-qs'
 import { setupBookRoutes } from './src/books'
+import { setupWarehouseRoutes } from './src/warehouse'
 
 const app = new Koa()
 
@@ -15,6 +16,7 @@ app.use(cors())
 const router = zodRouter()
 
 setupBookRoutes(router)
+setupWarehouseRoutes(router)
 
 app.use(router.routes())
 
