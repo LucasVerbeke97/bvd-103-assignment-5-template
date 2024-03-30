@@ -51,12 +51,16 @@ async function placeBooksOnShelf (bookId: BookID, numberOfBooks: number, shelf: 
   }
 }
 
-async function bookAvailability (bookId: BookID): Promise<number> {
-  throw new Error('not implemented')
-}
-
-async function orderBooks (order: BookID[]): Promise<{ orderId: OrderId } | { missingBooks: Array<{ book: BookID, numberAvailable: number, numberRequested: number }> }> {
-  throw new Error('not implemented')
+async function orderBooks (order: BookID[]): Promise<{ orderId: OrderId }> {
+  const result = await fetch('http://localhost:3000/order', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order })
+  })
+  if (!result.ok) {
+    throw new Error('Couldnt Place on Shelf')
+  }
+  return { orderId: await result.text() }
 }
 
 async function findBookOnShelf (book: BookID): Promise<Array<{ shelf: ShelfId, count: number }>> {
@@ -80,7 +84,6 @@ export default {
   removeBook,
   listBooks,
   placeBooksOnShelf,
-  bookAvailability,
   orderBooks,
   findBookOnShelf,
   fulfilOrder,

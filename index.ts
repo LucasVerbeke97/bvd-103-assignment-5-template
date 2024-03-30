@@ -13,7 +13,7 @@ qs(app)
 // And we add cors to ensure we can access our API from the mcmasterful-books website
 app.use(cors())
 
-const router = zodRouter()
+const router = zodRouter({ zodRouter: { exposeRequestErrors: true } })
 
 setupBookRoutes(router)
 setupWarehouseRoutes(router)

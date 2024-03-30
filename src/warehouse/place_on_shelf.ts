@@ -51,7 +51,7 @@ if (import.meta.vitest !== undefined) {
   })
 
   test('placing a book on a shelf with other copies of the book results in all of them being there', async () => {
-    const data = new InMemoryWarehouse({ my_book: { my_shelf: 5 } })
+    const data = new InMemoryWarehouse({ books: { my_book: { my_shelf: 5 } } })
 
     await placeBooksOnShelf(data, 'my_book', 1, 'my_shelf')
 
