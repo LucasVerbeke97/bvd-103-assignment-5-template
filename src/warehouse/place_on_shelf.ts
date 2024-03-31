@@ -1,7 +1,8 @@
 import { type ZodRouter } from 'koa-zod-router'
 import { type ShelfId, type BookID } from '../../adapter/assignment-4'
-import { InMemoryWarehouse, type WarehouseData, DefaultWarehouseData } from './warehouse_data'
+import { InMemoryWarehouse, type WarehouseData } from './warehouse_data'
 import { z } from 'zod'
+import { DefaultWarehouseDatabase } from './warehouse_database'
 
 async function placeBooksOnShelf (data: WarehouseData, bookId: BookID, numberOfBooks: number, shelf: ShelfId): Promise<void> {
   if (numberOfBooks < 0) {
@@ -27,7 +28,7 @@ export function placeBooksOnShelfRouter (router: ZodRouter): void {
       const { book, shelf, number } = ctx.request.params
 
       try {
-        await placeBooksOnShelf(DefaultWarehouseData, book, number, shelf)
+        await placeBooksOnShelf(DefaultWarehouseDatabase, book, number, shelf)
 
         ctx.status = 200
         return await next()

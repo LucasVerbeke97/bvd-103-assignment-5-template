@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { type BookID } from '../../adapter/assignment-2'
 import { type OrderId, type ShelfId } from '../../adapter/assignment-4'
+import { DefaultWarehouseDatabase } from './warehouse_database'
 
 export interface WarehouseData {
   placeBookOnShelf: (bookId: BookID, shelf: ShelfId, count: number) => Promise<void>
@@ -67,4 +68,4 @@ export class InMemoryWarehouse implements WarehouseData {
   }
 }
 
-export const DefaultWarehouseData = new InMemoryWarehouse()
+export const DefaultWarehouseData: WarehouseData = DefaultWarehouseDatabase

@@ -10,7 +10,7 @@ export async function setup (): Promise<void> {
 
 export async function teardown (): Promise<void> {
   const instance: MongoMemoryServer = (global as any).__MONGOINSTANCE
-  await instance.stop()
+  await instance.stop({ doCleanup: true })
 }
 
 await setup()

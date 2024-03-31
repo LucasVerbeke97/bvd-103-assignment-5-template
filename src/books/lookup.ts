@@ -1,11 +1,11 @@
 import { z } from 'zod'
-import { getDatabase, type DatabaseAccessor } from '../database_access'
+import { getBookDatabase, type BookDatabaseAccessor } from '../database_access'
 import { type BookID, type Book } from '../../adapter/assignment-2'
 import { type ZodRouter } from 'koa-zod-router'
 import { ObjectId } from 'mongodb'
-import { generateId, seedDatabase } from '../../database_test_utilities'
+import { generateId, seedBookDatabase } from '../../database_test_utilities'
 
-async function getBook (id: BookID, { books }: DatabaseAccessor): Promise<Book | false> {
+async function getBook (id: BookID, { books }: BookDatabaseAccessor): Promise<Book | false> {
   if (id.length !== 24) {
     console.error('Failed with id: ', id)
     return false
@@ -38,7 +38,7 @@ export default function getBookRoute (router: ZodRouter): void {
     handler: async (ctx, next) => {
       const { id } = ctx.request.params
 
-      const result = await getBook(id, getDatabase())
+      const result = await getBook(id, getBookDatabase())
 
       if (result === false) {
         ctx.status = 404
@@ -55,7 +55,7 @@ if (import.meta.vitest !== undefined) {
   const { test, expect } = import.meta.vitest
 
   test('Can Find A Matching Book', async () => {
-    const db = getDatabase()
+    const db = getBookDatabase()
     const id: BookID = generateId()
     const testBook: Book = {
       id,
@@ -65,7 +65,7 @@ if (import.meta.vitest !== undefined) {
       price: 0,
       image: ''
     }
-    await seedDatabase(db, { books: { [id]: testBook } })
+    await seedBookDatabase(db, { books: { [id]: testBook } })
     const result = await getBook(id, db)
 
     expect(result).toBeTruthy()
