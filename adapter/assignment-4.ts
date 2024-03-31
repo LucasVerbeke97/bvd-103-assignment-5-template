@@ -64,16 +64,40 @@ async function orderBooks (order: BookID[]): Promise<{ orderId: OrderId }> {
 }
 
 async function findBookOnShelf (book: BookID): Promise<Array<{ shelf: ShelfId, count: number }>> {
-  return [{ shelf: 'shelf-1', count: 2 }, { shelf: 'shelf-2', count: 5 }]
+  const result = await fetch(`http://localhost:3000/warehouse/${book}`)
+  if (result.ok) {
+    const results = (await result.json()) as Record<ShelfId, number>
+    const shelfArray: Array<{ shelf: ShelfId, count: number }> = []
+    for (const shelf of Object.keys(results)) {
+      shelfArray.push({
+        shelf,
+        count: results[shelf]
+      })
+    }
+    return shelfArray
+  } else {
+    throw new Error('Couldnt Find Book')
+  }
 }
 
 async function fulfilOrder (order: OrderId, booksFulfilled: Array<{ book: BookID, shelf: ShelfId, numberOfBooks: number }>): Promise<void> {
-  throw new Error('not implemented')
+  const result = await fetch(`http://localhost:3000/fulfil/${order}`, {
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(booksFulfilled)
+  })
+  if (!result.ok) {
+    throw new Error(`Couldnt Fulfil ${await result.text()}`)
+  }
 }
 
-async function listOrders (): Promise<Array<{ orderId: OrderId, books: BookID[] }>> {
-  return [
-  ]
+async function listOrders (): Promise<Array<{ orderId: OrderId, books: Record<BookID, number> }>> {
+  const result = await fetch('http://localhost:3000/order')
+  if (result.ok) {
+    return await result.json() as Array<{ orderId: OrderId, books: Record<BookID, number> }>
+  } else {
+    throw new Error('Couldnt Find Book')
+  }
 }
 
 const assignment = 'assignment-4'
